@@ -1,4 +1,5 @@
 import Component from 'inferno-component';
+import {Link} from 'inferno-router';
 import {format} from 'date-fns';
 import * as Api from '../api';
 
@@ -12,7 +13,7 @@ interface Pasta {
 function PastaRow({id, type, updated_at, title}) {
   return (
     <tr>
-      <td><a href={`/pastas/${id}`}>{title}</a></td>
+      <td><Link to={`/pastas/${id}`}>{title}</Link></td>
       <td>{type}</td>
       <td>{format(updated_at, 'YYYY-MM-DD HH:mm:ss')}</td>
     </tr>
@@ -37,7 +38,7 @@ class PastaTable extends Component<PastaTableProps, undefined> {
         <tbody>
           <tr>
             <td colspan="3">
-              <a href="/pastas/new">New pasta...</a>
+              <Link to="/pastas/new">New pasta...</Link>
             </td>
           </tr>
           {

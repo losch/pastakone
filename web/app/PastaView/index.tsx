@@ -1,4 +1,5 @@
 import Component from 'inferno-component';
+import {IndexLink} from 'inferno-router';
 import * as Api from '../api';
 import CodeEditor from '../components/CodeEditor';
 import {PASTA_TYPES} from '../components/CodeEditor';
@@ -92,7 +93,6 @@ export default class PastaView extends Component<any, any> {
   }
 
   onCancel() {
-    window.location.href = "/";
   }
 
   render() {
@@ -121,7 +121,7 @@ export default class PastaView extends Component<any, any> {
               'Saved!' :
               'Save'
         }</Button>
-        <Button onClick={this.onCancel}>Show all pastas</Button>
+        <IndexLink><Button onClick={this.onCancel}>Show all pastas</Button></IndexLink>
         {
           this.state.isLoading ?
             <div>Loading...</div> :
