@@ -1,0 +1,12 @@
+.Label {
+    margin: 3px;
+}
+
+.TitleInput {
+    width: 400px;
+}
+
+.InputGroup {
+    display: inline-block;
+    margin: 6px;
+}

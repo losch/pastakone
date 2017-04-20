@@ -1,0 +1,48 @@
+{
+  "name": "pastakone",
+  "version": "1.0.0",
+  "description": "Pastebin clone",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production webpack -p",
+    "lint": "tslint web/app/*.ts{,x} web/app/**/*.ts{,x}",
+    "start": "webpack-dev-server --inline"
+  },
+  "author": "Ilari Nummila",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "axios": "^0.16.1",
+    "brace": "^0.10.0",
+    "date-fns": "^1.28.3",
+    "inferno": "^3.0.4",
+    "inferno-component": "^3.0.4",
+    "inferno-redux": "^3.0.4",
+    "inferno-router": "^3.0.4",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.24.1",
+    "babel-loader": "^6.4.1",
+    "babel-plugin-inferno": "^3.2.0",
+    "babel-plugin-syntax-object-rest-spread": "^6.13.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.16",
+    "css-loader": "^0.28.0",
+    "html-webpack-plugin": "^2.28.0",
+    "source-map-loader": "^0.2.1",
+    "style-loader": "^0.16.1",
+    "ts-loader": "^2.0.3",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2",
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.2"
+  }
+}
