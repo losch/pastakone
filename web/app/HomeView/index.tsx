@@ -31,7 +31,7 @@ class PastaTable extends Component<PastaTableProps, undefined> {
         <thead>
           <tr>
             <th>Title</th>
-            <th>Type</th>
+            <th>Language</th>
             <th>Updated at</th>
           </tr>
         </thead>

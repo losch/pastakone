@@ -32,6 +32,11 @@ export default class PastaView extends Component<any, any> {
 
   componentWillMount() {
     const id = this.props.params.id;
+
+    if (id === "new") {
+      document.title = `Pastakone - New pasta`;
+    }
+
     if (id && id !== 'new') {
       Api.fetchPasta(id)
         .then(response => {
