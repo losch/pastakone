@@ -6,7 +6,7 @@ defmodule Pastakone.Pasta do
     field :type, :string
     field :contents, :string
 
-    timestamps()
+    timestamps(type: :utc_datetime)
   end
 
   @doc """
