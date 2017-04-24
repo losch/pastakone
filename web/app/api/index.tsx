@@ -5,7 +5,7 @@ export function fetchPastaIndex(): AxiosPromise {
 }
 
 export function fetchPasta(id: string): AxiosPromise {
-  return axios.get(`/api/pastas/${id}`).then(response => response.data);
+  return axios.get(`/api/pastas/${id}`);
 }
 
 interface PastaParams {

@@ -3,10 +3,14 @@ defmodule Pastakone.PageController do
 
   alias Pastakone.Pasta
 
+  defp pasta_to_title(pasta) do
+    "#{pasta.title} [#{pasta.type}]"
+  end
+
   defp create_title(id) do
     case Repo.get(Pasta, id, select: [:title, :type]) do
       nil -> "Not found"
-      pasta -> "#{pasta.title} [#{pasta.type}]"
+      pasta -> pasta_to_title(pasta)
     end
   end
 
@@ -21,5 +25,13 @@ defmodule Pastakone.PageController do
 
   def index(conn, _params) do
     render(conn, "index.html", title: "Hall of Spaghetti")
+  end
+
+  # Returns pasta as plain text
+  def raw(conn, %{"id" => id}) do
+    case Repo.get(Pasta, id, select: [:title, :type]) do
+      nil -> "Not found"
+      pasta -> text(conn, pasta.contents)
+    end
   end
 end

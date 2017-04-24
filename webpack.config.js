@@ -96,6 +96,14 @@ module.exports = {
           "port": 4000
         },
         changeOrigin: true
+      },
+      "/pastas/*/raw": {
+        "target": {
+          "host": 'localhost',
+          "protocol": 'http:',
+          "port": 4000
+        },
+        changeOrigin: true
       }
     }
   },

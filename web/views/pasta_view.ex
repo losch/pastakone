@@ -6,7 +6,7 @@ defmodule Pastakone.PastaView do
   end
 
   def render("show.json", %{pasta: pasta}) do
-    %{data: render_one(pasta, Pastakone.PastaView, "pasta.json")}
+    render_one(pasta, Pastakone.PastaView, "pasta.json")
   end
 
   def render("pasta.json", %{pasta: pasta}) do

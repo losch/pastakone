@@ -18,6 +18,7 @@ defmodule Pastakone.Router do
 
     get "/", PageController, :index
     get "/pastas/:id", PageController, :index
+    get "/pastas/:id/raw", PageController, :raw
   end
 
   # Other scopes may use custom stacks.

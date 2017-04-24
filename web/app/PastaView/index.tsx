@@ -1,3 +1,4 @@
+import {linkEvent} from 'inferno';
 import Component from 'inferno-component';
 import {IndexLink} from 'inferno-router';
 import * as Api from '../api';
@@ -26,8 +27,6 @@ export default class PastaView extends Component<any, any> {
 
     this.onTitleChange = title => this.setState({title: title});
     this.onTypeChange = e => this.setState({type: e.target.value});
-    this.onSave = this.onSave.bind(this);
-    this.onCancel = this.onCancel.bind(this);
   }
 
   componentWillMount() {
@@ -71,36 +70,50 @@ export default class PastaView extends Component<any, any> {
     }
   }
 
-  onSave() {
-    const id = this.props.params.id;
+  private onSave(instance: PastaView) {
+    const id = instance.props.params.id;
 
     const pasta = {
-      title: this.state.title,
-      contents: this.codeEditor.value(),
-      type: this.state.type
+      title: instance.state.title,
+      contents: instance.codeEditor.value(),
+      type: instance.state.type
     };
 
-    const saving = id == 'new' ?
+    const saving = id === 'new' ?
                    Api.createPasta(pasta) :
                    Api.updatePasta(id, pasta);
 
-    this.setState({isSaving: true, isSaved: false}, () => {
+    instance.setState({isSaving: true, isSaved: false}, () => {
       saving
         .then(response => {
-          console.log('**** OK', response);
-          this.setState({isSaving: false, isSaved: true});
+          // Route to new ID upon saving
+          if (id === 'new') {
+            const newId = response.data.id;
+            window.location.href = `/pastas/${newId}`;
+          }
+
+          instance.setState({isSaving: false, isSaved: true});
         })
         .then(err => {
           console.log('*** err', err);
-          this.setState({isSaving: false});
+          instance.setState({isSaving: false});
         });
     });
   }
 
-  onCancel() {
+  private onCancel() {}
+
+  private createRawLink(): string | null {
+    const id = this.props.params.id;
+
+    return id && id !== 'new' ?
+           `/pastas/${id}/raw` :
+           null;
   }
 
   render() {
+    const rawLink = this.createRawLink();
+
     return (
       <div>
         <div className={styles.InputGroup}>
@@ -119,14 +132,24 @@ export default class PastaView extends Component<any, any> {
           </select>
         </div>
 
-        <Button onClick={this.onSave}>{
-          this.state.isSaving ?
-            'Saving...' :
-            this.state.isSaved ?
-              'Saved!' :
-              'Save'
+        <Button onClick={linkEvent(this, this.onSave)}>{
+          this.state.isSaving ? 'Saving...' :
+                                this.state.isSaved ? 'Saved!' :
+                                                     'Save'
         }</Button>
-        <IndexLink><Button onClick={this.onCancel}>Show all pastas</Button></IndexLink>
+
+        <IndexLink>
+          <Button onClick={this.onCancel}>Show all pastas</Button>
+        </IndexLink>
+
+        {
+          rawLink ?
+            <a href={`/pastas/${this.props.params.id}/raw`}>
+              <Button>Raw pasta</Button>
+            </a> :
+            <Button disabled={true}>Raw pasta</Button>
+        }
+
         {
           this.state.isLoading ?
             <div>Loading...</div> :
