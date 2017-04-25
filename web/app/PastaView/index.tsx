@@ -1,14 +1,17 @@
 import {linkEvent} from 'inferno';
 import Component from 'inferno-component';
 import {IndexLink} from 'inferno-router';
+import {connect} from 'inferno-redux';
 import * as Api from '../api';
 import CodeEditor from '../components/CodeEditor';
-import {PASTA_TYPES} from '../components/CodeEditor';
+import PASTA_TYPES from '../constants/languages';
 import Button from '../components/Button';
 import Input from '../components/Input';
+import InputGroup from '../components/InputGroup';
 import * as styles from './PastaView.css';
+import {StoreInterface} from "../store/index";
 
-export default class PastaView extends Component<any, any> {
+class PastaView extends Component<any, any> {
   private codeEditor: any;
   private onTitleChange: (title) => void;
   private onTypeChange: (type) => void;
@@ -18,7 +21,7 @@ export default class PastaView extends Component<any, any> {
 
     this.state = {
       title: '',
-      type: 'plain_text',
+      type: this.props.settings.defaultLanguage,
       contents: '',
       isLoading: true,
       isSaving: false,
@@ -116,21 +119,21 @@ export default class PastaView extends Component<any, any> {
 
     return (
       <div>
-        <div className={styles.InputGroup}>
+        <InputGroup>
           <label className={styles.Label}>Title</label>
           <Input className={styles.TitleInput}
                  value={this.state.title}
                  onChange={this.onTitleChange}
                  placeholder="Title" />
-        </div>
+        </InputGroup>
 
-        <div className={styles.InputGroup}>
+        <InputGroup>
           <select value={this.state.type} onChange={this.onTypeChange}>
             {
               PASTA_TYPES.map(type => <option value={type}>{type}</option>)
             }
           </select>
-        </div>
+        </InputGroup>
 
         <Button onClick={linkEvent(this, this.onSave)}>{
           this.state.isSaving ? 'Saving...' :
@@ -156,9 +159,18 @@ export default class PastaView extends Component<any, any> {
             <CodeEditor ref={ref => this.codeEditor = ref}
                         title={this.state.title}
                         type={this.state.type}
-                        contents={this.state.contents} />
+                        contents={this.state.contents}
+                        theme={this.props.settings.theme} />
         }
       </div>
     );
   }
 }
+
+const connectSettingsState = connect(
+  (state: StoreInterface) => ({
+    settings: state.settings
+  })
+);
+
+export default connectSettingsState(PastaView);

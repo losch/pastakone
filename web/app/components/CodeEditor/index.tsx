@@ -1,6 +1,7 @@
 import Component from 'inferno-component';
 import * as ace from 'brace';
 
+// Modes
 import 'brace/mode/clojure';
 import 'brace/mode/css';
 import 'brace/mode/erlang';
@@ -30,45 +31,24 @@ import 'brace/mode/typescript';
 import 'brace/mode/xquery';
 import 'brace/mode/xml';
 
+// Light themes
+import 'brace/theme/chrome';
+import 'brace/theme/github';
+
+// Dark themes
+import 'brace/theme/ambiance';
+import 'brace/theme/merbivore';
 import 'brace/theme/monokai';
+
 import * as AceAjax from 'brace';
 import * as styles from './CodeEditor.css';
 
-export const PASTA_TYPES = [
-  'plain_text',
-  'html',
-  'css',
-  'java',
-  'javascript',
-  'haskell',
-  'clojure',
-  'erlang',
-  'elixir',
-  'elm',
-  'dockerfile',
-  'gitignore',
-  'groovy',
-  'json',
-  'jsx',
-  'markdown',
-  'makefile',
-  'php',
-  'python',
-  'r',
-  'ruby',
-  'rust',
-  'sass',
-  'scala',
-  'sql',
-  'typescript',
-  'xquery',
-  'xml'
-];
 
 interface CodeEditorProps {
   title?: string;
   type?: string;
   contents?: string;
+  theme?: string;
 }
 
 export default class CodeEditor extends Component<CodeEditorProps, any> {
@@ -91,7 +71,11 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
                  'ace/mode/plain';
 
     this.editor.getSession().setMode(mode);
-    this.editor.setTheme('ace/theme/monokai');
+
+    const theme = this.props.theme ?
+                  `ace/theme/${this.props.theme}` :
+                  'ace/theme/monokai';
+    this.editor.setTheme(theme);
   }
 
   componentWillUnmount() {
@@ -107,6 +91,13 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
                    `ace/mode/${nextProps.type}` :
                    'ace/mode/plain';
       this.editor.getSession().setMode(mode);
+    }
+
+    if (this.editor && this.props.theme !== nextProps.theme) {
+      const theme = nextProps.theme ?
+                    `ace/theme/${nextProps.theme}` :
+                    'ace/theme/monokai';
+      this.editor.setTheme(theme);
     }
   }
 
