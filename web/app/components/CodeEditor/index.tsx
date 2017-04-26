@@ -1,35 +1,7 @@
 import Component from 'inferno-component';
 import * as ace from 'brace';
 
-// Modes
-import 'brace/mode/clojure';
-import 'brace/mode/css';
-import 'brace/mode/erlang';
-import 'brace/mode/elixir';
-import 'brace/mode/elm';
-import 'brace/mode/dockerfile';
-import 'brace/mode/gitignore';
-import 'brace/mode/groovy';
-import 'brace/mode/haskell';
-import 'brace/mode/html';
-import 'brace/mode/java';
-import 'brace/mode/javascript';
-import 'brace/mode/json';
-import 'brace/mode/jsx';
-import 'brace/mode/markdown';
-import 'brace/mode/makefile';
-import 'brace/mode/php';
-import 'brace/mode/plain_text'
-import 'brace/mode/python';
-import 'brace/mode/r';
-import 'brace/mode/ruby';
-import 'brace/mode/rust';
-import 'brace/mode/sass';
-import 'brace/mode/scala';
-import 'brace/mode/sql';
-import 'brace/mode/typescript';
-import 'brace/mode/xquery';
-import 'brace/mode/xml';
+import {loadMode} from './modes';
 
 // Light themes
 import 'brace/theme/chrome';
@@ -59,6 +31,27 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
     super(props);
   }
 
+  loadMode(props) {
+    const mode = props.type ?
+                 `ace/mode/${props.type}` :
+                 'ace/mode/plain_text';
+
+    const setMode = () => {
+      if (this.editor) {
+        console.log('Mode loaded, setting', mode);
+        this.editor.getSession().setMode(mode);
+      }
+    };
+
+    if (props.type && props.type !== 'plain_text') {
+      console.log('Loading mode', props.type);
+      loadMode(props.type, setMode);
+    }
+    else {
+      setMode();
+    }
+  }
+
   componentDidMount() {
     this.editor = ace.edit(this.refEditor);
 
@@ -66,11 +59,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
       this.editor.setValue(this.props.contents, -1);
     }
 
-    const mode = this.props.type ?
-                 `ace/mode/${this.props.type}` :
-                 'ace/mode/plain';
-
-    this.editor.getSession().setMode(mode);
+    this.loadMode(this.props);
 
     const theme = this.props.theme ?
                   `ace/theme/${this.props.theme}` :
@@ -87,10 +76,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
 
   componentWillReceiveProps(nextProps: CodeEditorProps) {
     if (this.editor && this.props.type !== nextProps.type) {
-      const mode = nextProps.type ?
-                   `ace/mode/${nextProps.type}` :
-                   'ace/mode/plain';
-      this.editor.getSession().setMode(mode);
+      this.loadMode(nextProps);
     }
 
     if (this.editor && this.props.theme !== nextProps.theme) {

@@ -9,21 +9,19 @@ var plugins = [
       inject: "body"
     }
   ),
-  new CleanWebpackPlugin(
-    ["priv/static"], {
-      verbose: true
-    }
-  ),
-  // By default, webpack does `n=>n` compilation with entry files. This concatenates
-  // them into a single chunk.
-  new webpack.optimize.LimitChunkCountPlugin({
-    maxChunks: 1
-  }),
   new webpack.HotModuleReplacementPlugin()
 ];
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('*** production build ***');
+  console.log('*** PRODUCTION BUILD ***');
+
+  plugins.push(
+    new CleanWebpackPlugin(
+      ["priv/static"], {
+        verbose: true
+      }
+    )
+  );
 
   plugins.push(
     new webpack.DefinePlugin({
@@ -56,6 +54,7 @@ module.exports = {
   output: {
     path: __dirname + "/priv/static",
     filename: "pastakone.js",
+    chunkFilename: "pastakone.[id].js",
     publicPath: '/'
   },
   resolve: {

@@ -9,7 +9,7 @@ defmodule Pastakone.Endpoint do
   # when deploying your static files in production.
   plug Plug.Static,
     at: "/", from: :pastakone, gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt index.html pastakone.js)
+    only_matching: ~w(css fonts images js favicon.ico robots.txt index.html pastakone)
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
