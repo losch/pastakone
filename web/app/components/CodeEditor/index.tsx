@@ -1,20 +1,9 @@
 import Component from 'inferno-component';
 import * as ace from 'brace';
-
+import {loadTheme} from './themes';
 import {loadMode} from './modes';
-
-// Light themes
-import 'brace/theme/chrome';
-import 'brace/theme/github';
-
-// Dark themes
-import 'brace/theme/ambiance';
-import 'brace/theme/merbivore';
-import 'brace/theme/monokai';
-
 import * as AceAjax from 'brace';
 import * as styles from './CodeEditor.css';
-
 
 interface CodeEditorProps {
   title?: string;
@@ -32,39 +21,45 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
   }
 
   loadMode(props) {
-    const mode = props.type ?
-                 `ace/mode/${props.type}` :
-                 'ace/mode/plain_text';
+    const mode = props.type || 'plain_text';
 
     const setMode = () => {
       if (this.editor) {
         console.log('Mode loaded, setting', mode);
-        this.editor.getSession().setMode(mode);
+        this.editor.getSession()
+                   .setMode(`ace/mode/${props.type}`);
       }
     };
 
-    if (props.type && props.type !== 'plain_text') {
-      console.log('Loading mode', props.type);
-      loadMode(props.type, setMode);
-    }
-    else {
+    if (mode === 'plain_text') {
       setMode();
     }
+    else {
+      console.log('Loading mode', props.type);
+      loadMode(mode, setMode);
+    }
+  }
+
+  loadTheme(props) {
+    const theme = props.theme || 'monokai';
+
+    loadTheme(props.theme, () => {
+      if (this.editor) {
+        this.editor.setTheme(`ace/theme/${theme}`);
+      }
+    });
   }
 
   componentDidMount() {
     this.editor = ace.edit(this.refEditor);
 
     if (this.props.contents) {
+      // Load contents and set cursor to the beginning
       this.editor.setValue(this.props.contents, -1);
     }
 
+    this.loadTheme(this.props);
     this.loadMode(this.props);
-
-    const theme = this.props.theme ?
-                  `ace/theme/${this.props.theme}` :
-                  'ace/theme/monokai';
-    this.editor.setTheme(theme);
   }
 
   componentWillUnmount() {
@@ -80,10 +75,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
     }
 
     if (this.editor && this.props.theme !== nextProps.theme) {
-      const theme = nextProps.theme ?
-                    `ace/theme/${nextProps.theme}` :
-                    'ace/theme/monokai';
-      this.editor.setTheme(theme);
+      this.loadTheme(nextProps);
     }
   }
 

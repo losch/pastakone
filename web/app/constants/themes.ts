@@ -1,9 +1,2 @@
-const THEMES = [
-  'chrome',
-  'github',
-  'ambiance',
-  'merbivore',
-  'monokai'
-];
-
+import {THEMES} from '../components/CodeEditor/themes';
 export default THEMES;
