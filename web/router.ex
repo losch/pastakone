@@ -17,6 +17,7 @@ defmodule Pastakone.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/settings", PageController, :index
     get "/pastas/:id", PageController, :index
     get "/pastas/:id/raw", PageController, :raw
   end
