@@ -1,7 +1,13 @@
 import Component from 'inferno-component';
 import {Link} from 'inferno-router';
+import {debounce} from 'lodash';
 import {format} from 'date-fns';
+import InputGroup from '../components/InputGroup';
+import Input from '../components/Input';
+import Button from '../components/Button';
 import * as Api from '../api';
+
+const QUERY_DELAY = 250; // ms
 
 interface Pasta {
   id: string;
@@ -53,21 +59,23 @@ class PastaTable extends Component<PastaTableProps, undefined> {
 }
 
 export default class HomeView extends Component<any, any> {
+  private debouncedQuery: any;
+
   constructor(props) {
     super(props);
 
     this.state = {
+      query: '',
       isLoading: true,
       pastas: []
     };
+
+    this.debouncedQuery = debounce(this.runQuery.bind(this), QUERY_DELAY);
   }
 
-  componentWillMount() {
-    document.title = `Pastakone - Hall of Spaghetti`;
-
-    Api.fetchPastaIndex()
+  private runQuery() {
+    Api.fetchPastaIndex(this.state.query)
       .then(pastas => {
-        console.log('Got response', pastas);
         this.setState({
           pastas: pastas,
           isLoading: false
@@ -82,11 +90,34 @@ export default class HomeView extends Component<any, any> {
       });
   }
 
+  componentWillMount() {
+    document.title = `Pastakone - Hall of Spaghetti`;
+    this.runQuery();
+  }
+
+  private queryChanged(query, immediate=false) {
+    const runQuery = immediate ? this.runQuery :
+                                 this.debouncedQuery;
+    this.setState({query: query}, runQuery);
+  }
+
   render() {
-    const {pastas, isLoading} = this.state;
+    const {pastas, isLoading, query} = this.state;
 
     return (
       <div>
+        <InputGroup>
+          <label>Search</label>
+          <Input value={query}
+                 onInput={(query) => this.queryChanged(query)} />
+          {
+            query ?
+              <Button style="small"
+                      onClick={() => this.queryChanged('', true)}>X</Button> :
+              null
+          }
+        </InputGroup>
+
         {
           isLoading ?
             <div>Loading...</div> :

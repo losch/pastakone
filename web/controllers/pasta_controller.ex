@@ -3,6 +3,15 @@ defmodule Pastakone.PastaController do
 
   alias Pastakone.Pasta
 
+  def index(conn, %{"query" => query}) do
+    pastas = Repo.all(
+      from p in Pasta,
+      select: [:title, :updated_at, :id, :type],
+      where: ilike(p.title, ^"%#{query}%")
+    )
+    render(conn, "index.json", pastas: pastas)
+  end
+
   def index(conn, _params) do
     pastas = Repo.all(
       from Pasta,

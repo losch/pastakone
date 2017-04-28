@@ -42,3 +42,16 @@
     background-color: gray;
     cursor: default;
 }
+
+.SmallButtonOuter {
+    composes: ButtonOuter;
+    min-width: 16px;
+    margin: 0;
+}
+
+.SmallButton {
+    composes: Button;
+    height: 20px;
+    line-height: 18px;
+    min-width: 16px;
+}
