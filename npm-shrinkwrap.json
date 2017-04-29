@@ -122,6 +122,11 @@
       "from": "path-to-regexp-es6@0.0.2",
       "resolved": "https://registry.npmjs.org/path-to-regexp-es6/-/path-to-regexp-es6-0.0.2.tgz"
     },
+    "qs": {
+      "version": "6.4.0",
+      "from": "qs@latest",
+      "resolved": "https://registry.npmjs.org/qs/-/qs-6.4.0.tgz"
+    },
     "redux": {
       "version": "3.6.0",
       "from": "redux@latest",

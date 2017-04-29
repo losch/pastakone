@@ -3,21 +3,42 @@ defmodule Pastakone.PastaController do
 
   alias Pastakone.Pasta
 
-  def index(conn, %{"query" => query}) do
-    pastas = Repo.all(
-      from p in Pasta,
-      select: [:title, :updated_at, :id, :type],
-      where: ilike(p.title, ^"%#{query}%")
-    )
-    render(conn, "index.json", pastas: pastas)
+  defp orderByField(orderBy) do
+    case orderBy do
+      "title" -> :title
+      "updated_at" -> :updated_at
+      "type" -> :type
+    end
   end
 
-  def index(conn, _params) do
-    pastas = Repo.all(
-      from Pasta,
-      select: [:title, :updated_at, :id, :type],
-      order_by: [desc: :updated_at]
-    )
+  defp addOrderBy(query, params) do
+    case params do
+      %{"orderBy" => orderBy, "order" => "asc"} ->
+        order_by(query, [p], [asc: ^orderByField(orderBy)])
+
+      %{"orderBy" => orderBy, "order" => "desc"} ->
+        order_by(query, [p], [desc: ^orderByField(orderBy)])
+
+      _ ->
+        query
+    end
+  end
+
+  defp addTitleFilter(query, params) do
+    case params do
+      %{"query" => titleQuery} ->
+        where(query, [p], ilike(p.title, ^"%#{titleQuery}%"))
+      _ ->
+        query
+    end
+  end
+
+  def index(conn, params) do
+    pastas = (from p in Pasta, select: [:title, :updated_at, :id, :type])
+      |> addTitleFilter(params)
+      |> addOrderBy(params)
+      |> Repo.all
+
     render(conn, "index.json", pastas: pastas)
   end
 

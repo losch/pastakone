@@ -1,0 +1,28 @@
+.Unselectable {
+    -webkit-user-select: none; /* Chrome/Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
+    -o-user-select: none;
+    user-select: none;
+}
+
+.PastaHeader {
+    composes: Unselectable;
+    cursor: pointer;
+}
+
+.Caret {
+    cursor: pointer;
+}
+
+.AscCaret{
+    composes: Caret;
+    padding: 0 12px 4px 4px;
+    background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIRnC2nKLnT4or00Puy3rx7VQAAOw==) no-repeat center right;
+}
+
+.DescCaret{
+    composes: Caret;
+    padding: 4px 12px 0 4px;
+    background:url(data:image/gif;base64,R0lGODlhCwALAJEAAAAAAP///xUVFf///yH5BAEAAAMALAAAAAALAAsAAAIPnI+py+0/hJzz0IruwjsVADs=) no-repeat center right;
+}

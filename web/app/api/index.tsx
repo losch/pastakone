@@ -1,14 +1,24 @@
 import axios, {AxiosPromise} from 'axios';
+import qs from 'qs';
+
+interface QueryParams {
+  // Query term
+  query?: string;
+
+  // Order of results
+  orderBy?: string;
+  order?: string;
+}
 
 /**
  * Fetches index of pastas
- * @param query - Title field query
+ * @param queryParams - Query parameters
  * @returns {AxiosPromise}
  */
-export function fetchPastaIndex(query?: string): AxiosPromise {
-  const url = query ? `/api/pastas?query=${query}`:
-                      '/api/pastas';
-  return axios.get(url)
+export function fetchPastaIndex(queryParams: QueryParams): AxiosPromise {
+  const baseUrl = '/api/pastas';
+  const querystring = qs.stringify(queryParams);
+  return axios.get(baseUrl + '?' + querystring)
               .then(response => response.data);
 }
 
