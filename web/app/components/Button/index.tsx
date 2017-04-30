@@ -2,26 +2,44 @@ import Component from 'inferno-component';
 import * as styles from './Button.css';
 
 type ButtonNormalStyle = 'normal';
+type ButtonDangerStyle = 'danger';
 type ButtonSmallStyle = 'small';
-type ButtonStyle = ButtonNormalStyle | ButtonSmallStyle;
+type ButtonStyle = ButtonNormalStyle | ButtonDangerStyle | ButtonSmallStyle;
 
 
 interface ButtonProps {
   onClick: () => void;
   children: any;
   disabled?: boolean;
-  style?: ButtonStyle;
+  buttonStyle?: ButtonStyle;
 }
 
 export default class Button extends Component<ButtonProps, undefined> {
   render() {
-    const {onClick, children, disabled, style} = this.props;
+    const {onClick, children, disabled, buttonStyle} = this.props;
+
+    let outerClass;
+    let innerClass;
+
+    switch (buttonStyle) {
+      case 'small':
+        outerClass = styles.SmallButtonOuter;
+        innerClass = styles.SmallButton;
+        break;
+
+      case 'danger':
+        outerClass = styles.DangerButtonOuter;
+        innerClass = styles.DangerButton;
+        break;
+
+      default:
+        outerClass = styles.ButtonOuter;
+        innerClass = styles.Button;
+    }
 
     return (
-      <div className={style === 'small' ? styles.SmallButtonOuter :
-                                          styles.ButtonOuter }>
-        <button className={style === 'small' ? styles.SmallButton :
-                                               styles.Button}
+      <div className={outerClass}>
+        <button className={innerClass}
                 disabled={disabled}
                 onClick={onClick}>{children}</button>
       </div>

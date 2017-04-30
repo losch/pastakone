@@ -55,3 +55,12 @@ export function createPasta(pasta: PastaParams) {
 export function updatePasta(id: string, pasta: PastaParams) {
   return axios.patch(`/api/pastas/${id}`, {pasta: pasta});
 }
+
+/**
+ * Deletes pasta
+ * @param id - Pasta's ID
+ * @returns {AxiosPromise}
+ */
+export function deletePasta(id: string) {
+  return axios.delete(`/api/pastas/${id}`);
+}

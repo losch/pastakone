@@ -92,7 +92,7 @@ class PastaView extends Component<any, any> {
           // Route to new ID upon saving
           if (id === 'new') {
             const newId = response.data.id;
-            window.location.href = `/pastas/${newId}`;
+            instance.context.router.push(`/pastas/${newId}`);
           }
 
           instance.setState({isSaving: false, isSaved: true});
@@ -102,6 +102,23 @@ class PastaView extends Component<any, any> {
           instance.setState({isSaving: false});
         });
     });
+  }
+
+  private onDelete(instance: PastaView) {
+    if (confirm("Are you sure?")) {
+      const id = instance.props.params.id;
+
+      if (id) {
+        Api.deletePasta(id)
+          .then(() => {
+            // Route back to index view
+            instance.context.router.push('/');
+          })
+          .catch(err => {
+            console.log('*** err', err);
+          });
+      }
+    }
   }
 
   private onCancel() {}
@@ -152,6 +169,9 @@ class PastaView extends Component<any, any> {
             </a> :
             <Button disabled={true}>Raw pasta</Button>
         }
+
+        <Button buttonStyle="danger"
+                onClick={linkEvent(this, this.onDelete)}>Delete</Button>
 
         {
           this.state.isLoading ?

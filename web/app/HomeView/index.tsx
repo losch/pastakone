@@ -182,7 +182,7 @@ export default class HomeView extends Component<any, any> {
                  onInput={(query) => this.queryChanged(query)} />
           {
             query ?
-              <Button style="small"
+              <Button buttonStyle="small"
                       onClick={() => this.queryChanged('', true)}>X</Button> :
               null
           }

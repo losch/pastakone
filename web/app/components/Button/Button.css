@@ -55,3 +55,17 @@
     line-height: 18px;
     min-width: 16px;
 }
+
+.DangerButtonOuter {
+    composes: ButtonOuter;
+}
+
+.DangerButton {
+    composes: Button;
+    background-color: red;
+}
+
+.DangerButton:hover {
+    background-color: #ff6166;
+}
+

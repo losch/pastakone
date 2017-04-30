@@ -26,6 +26,6 @@ defmodule Pastakone.Router do
   scope "/api", Pastakone do
     pipe_through :api
 
-    resources "/pastas", PastaController, only: [:index, :show, :create, :update]
+    resources "/pastas", PastaController, except: [:new, :edit]
   end
 end
