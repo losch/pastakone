@@ -80,7 +80,8 @@ class UserSettingsView extends Component<any, any> {
             </select>
           </InputGroup>
 
-          <CodeEditor theme={this.props.theme}
+          <CodeEditor className={styles.CodeEditor}
+                      theme={this.props.theme}
                       type="typescript"
                       contents={TEST_DATA} />
         </div>

@@ -10,6 +10,7 @@ interface CodeEditorProps {
   type?: string;
   contents?: string;
   theme?: string;
+  className?: string;
 }
 
 export default class CodeEditor extends Component<CodeEditorProps, any> {
@@ -92,7 +93,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
   render() {
     return (
       <div id="javascript-editor"
-           className={styles.CodeEditor}
+           className={this.props.className || styles.CodeEditor}
            ref={ref => this.refEditor = ref} />
     );
   }
