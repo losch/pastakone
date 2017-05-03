@@ -18,13 +18,18 @@
 }
 
 .Text:hover {
-    color: #FAFAFA;
+    color: #eeeeee;
     text-decoration: none;
 }
 
 .BrandText {
     composes: Text;
     font-size: 24px;
+}
+
+.LinkText {
+    composes: Text;
+    margin-left: 12px;
 }
 
 .RightText {

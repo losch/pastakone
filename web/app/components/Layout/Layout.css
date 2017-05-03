@@ -1,5 +1,7 @@
 .Layout {}
 
 .Container {
-    margin: 2px 16px;
+    margin: 2px auto;
+
+    max-width: 980px;
 }

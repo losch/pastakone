@@ -1,6 +1,5 @@
 import {linkEvent} from 'inferno';
 import Component from 'inferno-component';
-import {IndexLink} from 'inferno-router';
 import {connect} from 'inferno-redux';
 import * as Api from '../api';
 import CodeEditor from '../components/CodeEditor';
@@ -121,8 +120,6 @@ class PastaView extends Component<any, any> {
     }
   }
 
-  private onCancel() {}
-
   private createRawLink(): string | null {
     const id = this.props.params.id;
 
@@ -157,10 +154,6 @@ class PastaView extends Component<any, any> {
                                 this.state.isSaved ? 'Saved!' :
                                                      'Save'
         }</Button>
-
-        <IndexLink>
-          <Button onClick={this.onCancel}>Show all pastas</Button>
-        </IndexLink>
 
         {
           rawLink ?
