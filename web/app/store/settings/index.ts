@@ -16,8 +16,14 @@ interface ChangeThemeAction {
   theme: string;
 }
 
+interface ChangeFontSizeAction {
+  type: 'CHANGE_FONT_SIZE';
+  size: string;
+}
+
 type SettingsAction = DefaultLanguageAction |
-                      ChangeThemeAction;
+                      ChangeThemeAction |
+                      ChangeFontSizeAction;
 
 /*
  * Action creators
@@ -39,6 +45,13 @@ export function createChangeThemeAction(theme: string): ChangeThemeAction {
   };
 }
 
+export function createFontSizeChangeAction(size: string): ChangeFontSizeAction {
+  return {
+    type: 'CHANGE_FONT_SIZE',
+    size: size
+  };
+}
+
 /*
  * Reducer
  */
@@ -46,11 +59,13 @@ export function createChangeThemeAction(theme: string): ChangeThemeAction {
 export interface SettingsState {
   defaultLanguage: string;
   theme: string;
+  fontSize: string;
 }
 
 const initialState: SettingsState = {
   defaultLanguage: 'plain_text',
-  theme: 'monokai'
+  theme: 'monokai',
+  fontSize: "12"
 };
 
 export default function reducer(state: SettingsState = initialState,
@@ -66,6 +81,12 @@ export default function reducer(state: SettingsState = initialState,
       return {
         ...state,
         theme: action.theme
+      };
+
+    case 'CHANGE_FONT_SIZE':
+      return {
+        ...state,
+        fontSize: action.size
       };
 
     default:

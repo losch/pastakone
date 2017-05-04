@@ -5,7 +5,7 @@ import {StoreInterface} from "../store/index";
 import {Dispatch} from "redux";
 import {
   createChangeThemeAction,
-  createDefaultLanguageAction
+  createDefaultLanguageAction, createFontSizeChangeAction
 } from "../store/settings/index";
 import LANGUAGES from '../constants/languages';
 import THEMES from '../constants/themes';
@@ -39,6 +39,10 @@ const store: Store<StoreInterface> = createStore(rootReducer, enhancer);
 export default store;
 `;
 
+const FONT_SIZES = [
+  '6', '8', '10', '12', '14', '16', '18', '20', '24', '28', '30'
+];
+
 class UserSettingsView extends Component<any, any> {
   onTypeChange(instance, e) {
     const language = e.target.value;
@@ -48,6 +52,11 @@ class UserSettingsView extends Component<any, any> {
   onThemeChange(instance, e) {
     const theme = e.target.value;
     instance.props.changeTheme(theme);
+  }
+
+  onFontSizeChange(instance, e) {
+    const size = e.target.value;
+    instance.props.changeFontSize(size);
   }
 
   render() {
@@ -80,8 +89,20 @@ class UserSettingsView extends Component<any, any> {
             </select>
           </InputGroup>
 
+          <InputGroup>
+            <label className={styles.Label}>Font size</label>
+
+            <select value={this.props.fontSize}
+                    onChange={linkEvent(this, this.onFontSizeChange)}>
+              {
+                FONT_SIZES.map(size => <option value={size}>{size}</option>)
+              }
+            </select>
+          </InputGroup>
+
           <CodeEditor className={styles.CodeEditor}
                       theme={this.props.theme}
+                      fontSize={this.props.fontSize}
                       type="typescript"
                       contents={TEST_DATA} />
         </div>
@@ -93,13 +114,16 @@ class UserSettingsView extends Component<any, any> {
 const connectSettingsState = connect(
   (state: StoreInterface) => ({
     defaultLanguage: state.settings.defaultLanguage,
-    theme: state.settings.theme
+    theme: state.settings.theme,
+    fontSize: state.settings.fontSize
   }),
   (dispatch: Dispatch<StoreInterface>) => ({
     changeDefaultLanguage: (language: string) =>
       dispatch(createDefaultLanguageAction(language)),
     changeTheme: (theme: string) =>
-      dispatch(createChangeThemeAction(theme))
+      dispatch(createChangeThemeAction(theme)),
+    changeFontSize: (size: string) =>
+      dispatch(createFontSizeChangeAction(size))
   })
 );
 

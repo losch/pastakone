@@ -31,7 +31,7 @@ class PastaView extends Component<any, any> {
     this.onTypeChange = e => this.setState({type: e.target.value});
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const id = this.props.params.id;
 
     if (id === "new") {
@@ -173,7 +173,8 @@ class PastaView extends Component<any, any> {
                         title={this.state.title}
                         type={this.state.type}
                         contents={this.state.contents}
-                        theme={this.props.settings.theme} />
+                        theme={this.props.settings.theme}
+                        fontSize={this.props.settings.fontSize} />
         }
       </div>
     );

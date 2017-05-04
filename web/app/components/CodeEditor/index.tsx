@@ -10,6 +10,7 @@ interface CodeEditorProps {
   type?: string;
   contents?: string;
   theme?: string;
+  fontSize?: string;
   className?: string;
 }
 
@@ -21,7 +22,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
     super(props);
   }
 
-  loadMode(props) {
+  private loadMode(props) {
     const mode = props.type || 'plain_text';
 
     const setMode = () => {
@@ -41,7 +42,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
     }
   }
 
-  loadTheme(props) {
+  private loadTheme(props) {
     const theme = props.theme || 'monokai';
 
     loadTheme(props.theme, () => {
@@ -49,6 +50,12 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
         this.editor.setTheme(`ace/theme/${theme}`);
       }
     });
+  }
+
+  private setFontSize(props) {
+    if (this.editor && props.fontSize !== undefined) {
+      this.editor.setFontSize(props.fontSize);
+    }
   }
 
   componentDidMount() {
@@ -61,6 +68,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
 
     this.loadTheme(this.props);
     this.loadMode(this.props);
+    this.setFontSize(this.props);
   }
 
   componentWillUnmount() {
@@ -71,12 +79,18 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
   }
 
   componentWillReceiveProps(nextProps: CodeEditorProps) {
-    if (this.editor && this.props.type !== nextProps.type) {
-      this.loadMode(nextProps);
-    }
+    if (this.editor) {
+      if (this.props.type !== nextProps.type) {
+        this.loadMode(nextProps);
+      }
 
-    if (this.editor && this.props.theme !== nextProps.theme) {
-      this.loadTheme(nextProps);
+      if (this.props.theme !== nextProps.theme) {
+        this.loadTheme(nextProps);
+      }
+
+      if (this.props.fontSize !== nextProps.fontSize) {
+        this.setFontSize(nextProps);
+      }
     }
   }
 

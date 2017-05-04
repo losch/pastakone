@@ -15,9 +15,9 @@ const routes = (
   <Router history={ browserHistory }>
     <Route component={ Layout }>
       <IndexRoute component={ HomeView }/>
-      <Route path="/pastas/:id" component={ PastaView }/>
-      <Route path="/settings" component={ UserSettingsView }/>
-      <Route path="*" component={ NoMatch }/>
+      <Route path="/pastas/:id" component={ PastaView } />
+      <Route path="/settings" component={ UserSettingsView } />
+      <Route path="*" component={ NoMatch } />
     </Route>
   </Router>
 );
