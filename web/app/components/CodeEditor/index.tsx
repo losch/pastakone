@@ -54,7 +54,7 @@ export default class CodeEditor extends Component<CodeEditorProps, any> {
 
   private setFontSize(props) {
     if (this.editor && props.fontSize !== undefined) {
-      this.editor.setFontSize(props.fontSize);
+      this.editor.setFontSize(props.fontSize + 'px');
     }
   }
 

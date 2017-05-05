@@ -55,8 +55,8 @@ class UserSettingsView extends Component<any, any> {
   }
 
   onFontSizeChange(instance, e) {
-    const size = e.target.value;
-    instance.props.changeFontSize(size);
+    const fontSize = e.target.value;
+    instance.props.changeFontSize(fontSize);
   }
 
   render() {
@@ -95,7 +95,9 @@ class UserSettingsView extends Component<any, any> {
             <select value={this.props.fontSize}
                     onChange={linkEvent(this, this.onFontSizeChange)}>
               {
-                FONT_SIZES.map(size => <option value={size}>{size}</option>)
+                FONT_SIZES.map(fontSize =>
+                  <option value={fontSize}>{fontSize}</option>
+                )
               }
             </select>
           </InputGroup>
@@ -122,8 +124,8 @@ const connectSettingsState = connect(
       dispatch(createDefaultLanguageAction(language)),
     changeTheme: (theme: string) =>
       dispatch(createChangeThemeAction(theme)),
-    changeFontSize: (size: string) =>
-      dispatch(createFontSizeChangeAction(size))
+    changeFontSize: (fontSize: string) =>
+      dispatch(createFontSizeChangeAction(fontSize))
   })
 );
 
