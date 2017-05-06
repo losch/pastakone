@@ -15,7 +15,7 @@ interface QueryParams {
  * @param queryParams - Query parameters
  * @returns {AxiosPromise}
  */
-export function fetchPastaIndex(queryParams: QueryParams): AxiosPromise {
+export function fetchPastaIndex(queryParams: QueryParams): any {
   const baseUrl = '/api/pastas';
   const querystring = qs.stringify(queryParams);
   return axios.get(baseUrl + '?' + querystring)

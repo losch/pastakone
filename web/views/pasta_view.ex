@@ -1,8 +1,9 @@
 defmodule Pastakone.PastaView do
   use Pastakone.Web, :view
 
-  def render("index.json", %{pastas: pastas}) do
-    render_many(pastas, Pastakone.PastaView, "pasta.json")
+  def render("index.json", %{pastas: pastas, total_count: total_count}) do
+    %{pastas: render_many(pastas, Pastakone.PastaView, "pasta.json"),
+      total_count: total_count}
   end
 
   def render("show.json", %{pasta: pasta}) do

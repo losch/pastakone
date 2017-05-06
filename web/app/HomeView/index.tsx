@@ -122,6 +122,7 @@ export default class HomeView extends Component<any, any> {
       query: '',
       isLoading: true,
       pastas: [],
+      total_count: 0,
       orderBy: orderByUpdatedAtDesc
     };
 
@@ -145,9 +146,10 @@ export default class HomeView extends Component<any, any> {
     };
 
     Api.fetchPastaIndex(queryParams)
-      .then(pastas => {
+      .then(response => {
         this.setState({
-          pastas: pastas,
+          total_count: response.total_count,
+          pastas: response.pastas,
           isLoading: false
         });
       })

@@ -33,13 +33,30 @@ defmodule Pastakone.PastaController do
     end
   end
 
+  defp addLimit(query, params) do
+    case params do
+      %{"limit" => limit, "offset" => offset} ->
+        query
+          |> limit(^limit)
+          |> offset(^offset)
+      _ ->
+        query
+    end
+  end
+
   def index(conn, params) do
     pastas = (from p in Pasta, select: [:title, :updated_at, :id, :type])
       |> addTitleFilter(params)
       |> addOrderBy(params)
+      |> addLimit(params)
       |> Repo.all
 
-    render(conn, "index.json", pastas: pastas)
+    total_count = (from p in Pasta)
+      |> select([p], count(p.id))
+      |> addTitleFilter(params)
+      |> Repo.all
+
+    render(conn, "index.json", pastas: pastas, total_count: total_count)
   end
 
   def create(conn, %{"pasta" => pasta_params}) do
