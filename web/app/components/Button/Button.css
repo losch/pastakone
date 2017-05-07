@@ -68,3 +68,14 @@
     background-color: #ff6166;
 }
 
+.MediumButtonOuter {
+    composes: ButtonOuter;
+    margin: 10px 0;
+}
+
+.MediumButton {
+    composes: Button;
+    height: 28px;
+    line-height: 26px;
+    min-width: 16px;
+}

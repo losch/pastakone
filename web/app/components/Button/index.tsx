@@ -3,9 +3,12 @@ import * as styles from './Button.css';
 
 type ButtonNormalStyle = 'normal';
 type ButtonDangerStyle = 'danger';
+type ButtonMediumStyle = 'medium';
 type ButtonSmallStyle = 'small';
-type ButtonStyle = ButtonNormalStyle | ButtonDangerStyle | ButtonSmallStyle;
-
+type ButtonStyle = ButtonNormalStyle |
+                   ButtonMediumStyle |
+                   ButtonDangerStyle |
+                   ButtonSmallStyle;
 
 interface ButtonProps {
   onClick: () => void;
@@ -30,6 +33,11 @@ export default class Button extends Component<ButtonProps, undefined> {
       case 'danger':
         outerClass = styles.DangerButtonOuter;
         innerClass = styles.DangerButton;
+        break;
+
+      case 'medium':
+        outerClass = styles.MediumButtonOuter;
+        innerClass = styles.MediumButton;
         break;
 
       default:

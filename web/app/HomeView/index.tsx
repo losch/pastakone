@@ -6,10 +6,12 @@ import {format} from 'date-fns';
 import InputGroup from '../components/InputGroup';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import Pagination from './Pagination';
 import * as Api from '../api';
 import * as styles from './HomeView.css';
 
 const QUERY_DELAY = 250; // ms
+const RESULTS_PER_PAGE = 10;
 
 interface Pasta {
   id: string;
@@ -98,7 +100,9 @@ class PastaTable extends Component<PastaTableProps, undefined> {
         <tbody>
           <tr>
             <td colspan="3">
-              <Link to="/pastas/new">New pasta...</Link>
+              <Link to="/pastas/new">
+                <Button buttonStyle="medium">New pasta...</Button>
+              </Link>
             </td>
           </tr>
           {
@@ -122,18 +126,33 @@ export default class HomeView extends Component<any, any> {
       query: '',
       isLoading: true,
       pastas: [],
-      total_count: 0,
+      totalCount: 0,
+      offset: 0,
       orderBy: orderByUpdatedAtDesc
     };
 
     this.debouncedQuery = debounce(this.runQuery.bind(this), QUERY_DELAY);
     this.onOrderByChanged = this.onOrderByChanged.bind(this);
+    this.onOffsetChanged = this.onOffsetChanged.bind(this);
   }
 
   private onOrderByChanged(orderBy) {
-    this.setState({
-      orderBy: orderBy
-    }, this.runQuery);
+    this.setState(
+      {
+        orderBy: orderBy,
+        offset: 0
+      },
+      this.runQuery
+    );
+  }
+
+  private onOffsetChanged(offset) {
+    this.setState(
+      {
+        offset: offset
+      },
+      this.runQuery
+    );
   }
 
   private runQuery() {
@@ -142,13 +161,15 @@ export default class HomeView extends Component<any, any> {
     const queryParams = {
       query: this.state.query,
       orderBy: orderBy,
-      order: order
+      order: order,
+      offset: this.state.offset,
+      limit: RESULTS_PER_PAGE
     };
 
     Api.fetchPastaIndex(queryParams)
       .then(response => {
         this.setState({
-          total_count: response.total_count,
+          totalCount: response.total_count,
           pastas: response.pastas,
           isLoading: false
         });
@@ -170,7 +191,13 @@ export default class HomeView extends Component<any, any> {
   private queryChanged(query, immediate=false) {
     const runQuery = immediate ? this.runQuery :
                                  this.debouncedQuery;
-    this.setState({query: query}, runQuery);
+    this.setState(
+      {
+        query: query,
+        offset: 0
+      },
+      runQuery
+    );
   }
 
   render() {
@@ -192,11 +219,16 @@ export default class HomeView extends Component<any, any> {
 
         {
           isLoading ?
-            <div>Loading...</div> :
+            <InputGroup><label>Loading...</label></InputGroup> :
             <PastaTable pastas={pastas}
                         orderBy={this.state.orderBy}
                         changeOrderBy={this.onOrderByChanged} />
         }
+
+        <Pagination offset={this.state.offset}
+                    onOffsetChanged={this.onOffsetChanged}
+                    resultsPerPage={RESULTS_PER_PAGE}
+                    totalCount={this.state.totalCount} />
       </div>
     );
   }
