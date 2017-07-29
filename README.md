@@ -5,14 +5,25 @@ InfernoJS and Ace Editor.
 
 ![Screenshot](./screenshots/screenshot.png?raw=true)
 
+
 ## Prerequisites
 
 * Erlang
 * Elixir
 * npm
-* PostgreSQL
+* PostgreSQL, or Docker and Docker Compose
 
-## Development mode
+
+## Development
+
+### Database
+
+Start up development database in Docker:
+`docker-compose up`
+
+### Application
+
+Run `mix deps.get` for fetching dependencies.
 
 Run `mix ecto.create` for creating database.
 
@@ -24,7 +35,11 @@ And start Webpack dev server in another terminal: `npm start`
 
 Then open browser at `http://localhost:8080`
 
+
 ## Release
+
+Copy `config/prod.secret.exs.template` as `config/prod.secret.exs` and fill
+in the secrets.
 
 Build frontend `npm run build`
 

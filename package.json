@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Pastebin clone",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=8.0.0 "
+  },
   "directories": {
     "test": "test"
   },
@@ -25,7 +28,7 @@
     "inferno-redux": "^3.0.4",
     "inferno-router": "^3.0.4",
     "qs": "^6.4.0",
-    "redux": "^3.6.0",
+    "redux": "^3.7.2",
     "redux-localstorage": "^0.4.1"
   },
   "devDependencies": {

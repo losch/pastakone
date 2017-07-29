@@ -2,7 +2,6 @@ import {linkEvent} from 'inferno';
 import Component from 'inferno-component';
 import {connect} from 'inferno-redux';
 import {StoreInterface} from "../store/index";
-import {Dispatch} from "redux";
 import {
   createChangeThemeAction,
   createDefaultLanguageAction, createFontSizeChangeAction
@@ -115,11 +114,11 @@ class UserSettingsView extends Component<any, any> {
 
 const connectSettingsState = connect(
   (state: StoreInterface) => ({
-    defaultLanguage: state.settings.defaultLanguage,
-    theme: state.settings.theme,
-    fontSize: state.settings.fontSize
+      defaultLanguage: state.settings.defaultLanguage,
+      fontSize: state.settings.fontSize,
+      theme: state.settings.theme
   }),
-  (dispatch: Dispatch<StoreInterface>) => ({
+  (dispatch: (action: any) => void) => ({
     changeDefaultLanguage: (language: string) =>
       dispatch(createDefaultLanguageAction(language)),
     changeTheme: (theme: string) =>
